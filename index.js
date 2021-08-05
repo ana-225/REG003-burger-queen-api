@@ -4,11 +4,20 @@ const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
+const mongoose = require("mongoose");
 
 const { port, dbUrl, secret } = config;
 const app = express();
 
 // TODO: Conexión a la Base de Datos (MongoDB o MySQL)
+
+mongoose
+  .connect(config.dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(console.log('exitoso'))
+  .catch(console.error('error'));
 
 app.set('config', config);
 app.set('pkg', pkg);
