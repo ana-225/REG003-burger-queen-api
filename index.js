@@ -17,8 +17,10 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(console.log('exitoso'))
-  .catch(console.error('error'));
+  .catch(err=>console.error(err));
 
+
+  
 app.set('config', config);
 app.set('pkg', pkg);
 
