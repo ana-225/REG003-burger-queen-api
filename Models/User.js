@@ -6,7 +6,6 @@ const {
 
 const userSchema = new Schema({
 
-
   email: {
     type: String,
     required: true,
@@ -24,9 +23,6 @@ const userSchema = new Schema({
       default: false,
     },
   },
-
-
-
 
 });
 

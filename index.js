@@ -9,14 +9,12 @@ const mongoose = require("mongoose");
 const { port, dbUrl, secret } = config;
 const app = express();
 
-// TODO: Conexión a la Base de Datos (MongoDB o MySQL)
-
 mongoose
   .connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(console.log('exitoso'))
+  .then(console.log('Conectada a la base de datos'))
   .catch(err=>console.error(err));
 
 

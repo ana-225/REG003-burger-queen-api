@@ -1,6 +1,4 @@
-const {
-  requireAuth,
-} = require('../middleware/auth');
+const { requireAuth } = require('../middleware/auth');
 
 /** @module orders */
 module.exports = (app, nextMain) => {
