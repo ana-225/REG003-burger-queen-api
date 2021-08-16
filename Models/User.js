@@ -1,25 +1,32 @@
-// //crear esquema (estructura de los datos)  usuarios- productos   - orden 
-// const { Schema, model} = require('mongoose')
+//crear esquema (estructura de los datos)  usuarios- productos   - orden 
+const {
+  Schema,
+  model,
+  Mongoose
+} = require('mongoose')
 
-// const userSchema = new Schema({
-//     user:{
-//         _id:String
-//     },
-    
-//     email:{
-//         type: String,
-//         required: true,
-//         unique: true,
-//     },
+const userSchema = new Schema({
 
-//     roles:{
-//         type: Boolean,
-//         default: false,
-//     },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+  },
 
+  password: {
+    type: String,
+    required: true,
+    select: false
+  },
 
-    
+  roles: {
+    admin: {
+      type: Boolean,
+      default: false,
+    },
+  },
+});
+//  userSchema.plugin(loadedAtPlugin)
 
-// });
-
-// module.export = model('')
+module.exports = model('User', userSchema);
