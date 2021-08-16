@@ -1,7 +1,8 @@
 //crear esquema (estructura de los datos)  usuarios- productos   - orden 
 const {
   Schema,
-  model
+  model,
+  Mongoose
 } = require('mongoose')
 
 const userSchema = new Schema({
@@ -10,11 +11,13 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    lowercase: true,
   },
 
   password: {
     type: String,
     required: true,
+    select: false
   },
 
   roles: {
@@ -23,7 +26,7 @@ const userSchema = new Schema({
       default: false,
     },
   },
-
 });
+//  userSchema.plugin(loadedAtPlugin)
 
-module.export = model('User', userSchema);
+module.exports = model('User', userSchema);

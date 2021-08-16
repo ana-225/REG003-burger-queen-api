@@ -1,9 +1,11 @@
 const {
   Schema,
-  model
+  model,
+  Mongoose
 } = require('mongoose')
 
 const orderSchema = new Schema({
+
 
   id: {
     type: String,
@@ -11,19 +13,47 @@ const orderSchema = new Schema({
     unique: true,
   },
 
+  userId: {
+    type: String
+  },
+
   client: {
     type: String,
     required: true,
+
   },
 
-  product: [{
+  products: [{
     qty: {
       type: Number,
       required: true,
     },
+
+    product: {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    },
   }],
+  status: {
+    type: String,
+    default: 'Pending',
+    required: true,
+  },
+  dateEntry: {
+    type: Date,
+    default: Date.now,
+    required: true,
+  },
+
+  dateProcessed: {
+    type: Date,
+    default: Date.now,
+    required: true,
+  },
+
+
+
+
 });
 
-module.export = model('Order', orderSchema)
-
-//STATUS, DATEENTRY
+module.exports = model('Order', orderSchema)

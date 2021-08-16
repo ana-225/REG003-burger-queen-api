@@ -2,15 +2,13 @@ const jwt = require('jsonwebtoken');
 const users = require('../Models/User')
 
 module.exports = (secret) => (req, resp, next) => {
-  const {
-    authorization
-  } = req.headers; // Kathy comenta:Authorization aparece en el objeto cuando una persona intenta conectarse?
-  console.log(req)
+  const { authorization } = req.headers; // Kathy comenta:Authorization aparece en el objeto cuando una persona intenta conectarse?
+  
   if (!authorization) {
     return next();
   }
 
-  const [type, token] = authorization.split(' ');
+  const [type, token] = authorization.split(' '); 
 
   if (type.toLowerCase() !== 'bearer') {
     return next();

@@ -5,6 +5,7 @@ const {
 
 const productSchema = new Schema({
 
+
   name: {
     type: String,
     required: true,
@@ -14,7 +15,6 @@ const productSchema = new Schema({
   price: {
     type: Number,
     required: true,
-    default: 0,
   },
 
   imagen: {
@@ -24,6 +24,7 @@ const productSchema = new Schema({
   type: {
     type: String,
   }
+
 });
 
-module.export = model('Product', productSchema);
+module.exports = model('Product', productSchema);
