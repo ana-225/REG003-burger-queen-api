@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
-const users = require('../Models/User')
+const Users = require('../Models/User')
 
 module.exports = (secret) => (req, resp, next) => {
   const { authorization } = req.headers; // Kathy comenta:Authorization aparece en el objeto cuando una persona intenta conectarse?
-  
   if (!authorization) {
     return next();
   }
@@ -22,7 +21,7 @@ module.exports = (secret) => (req, resp, next) => {
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
 
     try {
-      const userValidate = await users.findOne({_id: decodedToken.uid})
+      const userValidate = await Users.findOne({_id: decodedToken.uid})
       if (!userValidate) {
         return next(404);
       }
