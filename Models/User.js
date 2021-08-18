@@ -1,4 +1,3 @@
-//crear esquema (estructura de los datos)  usuarios- productos   - orden 
 const {
   Schema,
   model,
