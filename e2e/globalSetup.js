@@ -2,7 +2,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const nodeFetch = require('node-fetch');
 const kill = require('tree-kill');
-
+const mongoSetup = require('@shelf/jest-mongodb/setup');
 const config = require('../config');
 
 const port = process.env.PORT || 8888;
@@ -115,6 +115,13 @@ module.exports = () => new Promise(async(resolve, reject) => {
   await setUp();
   process.env.DB_URL = process.env.MONGO_URL;
 
+//mongoSetup().then(() => {
+//   console.info('Staring local server...');
+//    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
+//      cwd: path.resolve(__dirname, '../'),
+//      stdio: ['ignore', 'pipe', 'pipe'],
+//});
+
   console.info('Staring local server...');
   const child = spawn('node', ['index.js', process.env.PORT || 8888], {
     cwd: path.resolve(__dirname, '../'),
@@ -147,6 +154,7 @@ module.exports = () => new Promise(async(resolve, reject) => {
     .then(resolve)
     .catch((err) => {
       kill(child.pid, 'SIGKILL', () => reject(err));
+    });
     });
 });
 

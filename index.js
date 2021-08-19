@@ -13,6 +13,7 @@ mongoose
   .connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(console.log('Conectada a la base de datos'))
   .catch(err=>console.error(err));
@@ -21,7 +22,7 @@ mongoose
   
 app.set('config', config);
 app.set('pkg', pkg);
-mongoose.set('useFindAndModify', false);
+
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
