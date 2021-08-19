@@ -7,6 +7,8 @@ const config = require('../config');
 
 const port = process.env.PORT || 8888;
 const baseUrl = process.env.REMOTE_URL || `http://127.0.0.1:${port}`;
+const setUp = require('@shelf/jest-mongodb/setup');
+
 
 const __e2e = {
   port,
@@ -103,20 +105,28 @@ const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) =
 });
 
 
-module.exports = () => new Promise((resolve, reject) => {
+module.exports = () => new Promise(async(resolve, reject) => {
   if (process.env.REMOTE_URL) {
     console.info(`Running tests on remote server ${process.env.REMOTE_URL}`);
     return resolve();
   }
 
   // TODO: Configurar DB de tests
+  await setUp();
+  process.env.DB_URL = process.env.MONGO_URL;
 
-mongoSetup().then(() => {
-    console.info('Staring local server...');
-    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
-      cwd: path.resolve(__dirname, '../'),
-      stdio: ['ignore', 'pipe', 'pipe'],
-});
+//mongoSetup().then(() => {
+//   console.info('Staring local server...');
+//    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
+//      cwd: path.resolve(__dirname, '../'),
+//      stdio: ['ignore', 'pipe', 'pipe'],
+//});
+
+  console.info('Staring local server...');
+  const child = spawn('node', ['index.js', process.env.PORT || 8888], {
+    cwd: path.resolve(__dirname, '../'),
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
 
   Object.assign(__e2e, { childProcessPid: child.pid });
 
