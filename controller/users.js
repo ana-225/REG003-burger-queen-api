@@ -38,7 +38,7 @@ module.exports = {
       const verifyEmail = await Users.find({
         email: email
       });
-      if (verifyEmail.lenght !== 0) {
+      if (verifyEmail.length !== 0) {
         return res.status(403).send('Email ya registrado')
       }
       const newUser = new Users(user);
