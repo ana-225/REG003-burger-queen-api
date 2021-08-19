@@ -146,7 +146,7 @@ module.exports = (app, next) => {
    * @code {403} si ya existe usuaria con ese `email` ✔
    */
   // app.post('/users', requireAdmin, (req, resp, next) => {});
-  app.post('/users', createUser);
+  app.post('/users', requireAdmin, createUser);
 
   /**
    * @name PUT /users ✔
