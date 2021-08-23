@@ -1,16 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require ('mongoose')
 const {
   Schema,
   model,
-} = require('mongoose');
+  
+} = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const orderSchema = new Schema({
-
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
 
   userId: {
     type: String,
@@ -49,6 +45,8 @@ const orderSchema = new Schema({
     default: Date.now,
     required: true,
   },
-});
 
+});
+orderSchema.plugin(mongoosePaginate);
 module.exports = model('Order', orderSchema);
+

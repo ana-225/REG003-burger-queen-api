@@ -9,7 +9,6 @@ const config = require('../config');
 
 const port = process.env.PORT || 8888;
 const baseUrl = process.env.REMOTE_URL || `http://127.0.0.1:${port}`;
-const setUp = require('@shelf/jest-mongodb/setup');
 
 
 const __e2e = {
@@ -127,15 +126,21 @@ module.exports = () => new Promise(async (resolve, reject) => {
   }
 
   // TODO: Configurar DB de tests
-  await setUp();
-  process.env.DB_URL = process.env.MONGO_URL;
+ 
 
-  mongoSetup().then(() => {
-    console.info('Staring local server...');
-    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
-      cwd: path.resolve(__dirname, '../'),
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
+mongoSetup().then(() => {
+  process.env.DB_URL = process.env.MONGO_URL;
+  console.info('Staring local server...');
+   const child = spawn('node', ['index.js', process.env.PORT || 8888], {
+     cwd: path.resolve(__dirname, '../'),
+     stdio: ['ignore', 'pipe', 'pipe'],
+});
+
+Object.assign(__e2e, { childProcessPid: child.pid });
+
+  child.stdout.on('data', (chunk) => {
+    console.info(`\x1b[34m${chunk.toString()}\x1b[0m`);
+  });
 
     Object.assign(__e2e, {
       childProcessPid: child.pid

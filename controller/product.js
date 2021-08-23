@@ -16,24 +16,27 @@ module.exports = {
     } catch (err) {
       next(err);
     }
-  },
+},
 
-  // GET "Datos de un producto" - '/product/:productId'
-  getProduct: async (req, res, next) => {
-    try {
-      const { productId } = req.params.productId;
-      if (!productId) {
-        res.sendStatus(401);
-      }
-      const product = await Product.findOne({
-        _id: productId,
-      });
-      if (!product) {
-        res.sendStatus(404);
-      }
-      return res.status(200).json(product);
-    } catch (err) {
-      return next(404);
+//GET "Datos de un producto" - '/product/:productId'
+
+getProduct: async (req, res, next)=> {
+    try{
+        const productId =req.params.productId;
+        console.log(productId);
+        if (!productId){
+            res.sendStatus(401);
+        }
+        const product = await Product.findOne({_id:productId});
+        if (!product){
+            res.sendStatus(404);
+        }
+        return res.status(200).json(product);
+   
+    } catch (err){
+  
+        return next(404);
+
     }
   },
 
@@ -98,21 +101,16 @@ module.exports = {
   deleteProduct: async (req, res, next) => {
     const productId = req.params.productId;
 
-    try {
-      // if(!isAdmin(req)) {
-      //     res.status(403).send('No esta autorizado');
-      // }
-      const findProduct = await Product.findOne({
-        _id: productId
-      });
-      console.log('esta pasando por try');
-      await Product.findOneAndDelete({
-        _id: productId
-      });
-      return res.status(200).json(findProduct);
-    } catch (err) {
-      console.log('esta pasando por catch');
-      next(404);
-    }
-  }
+    try{
+        // if(!isAdmin(req)) {
+        //     res.status(403).send('No esta autorizado');
+        // }
+        const findProduct = await Product.findOne({_id:productId});
+        await Product.findOneAndDelete({_id:productId});
+        return res.status(200).json(findProduct);
+    }catch(err){
+        next(404);  
+      }
+}
+
 };
