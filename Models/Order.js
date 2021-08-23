@@ -1,11 +1,10 @@
+const mongoose = require('mongoose');
 const {
   Schema,
   model,
-  Mongoose
-} = require('mongoose')
+} = require('mongoose');
 
 const orderSchema = new Schema({
-
 
   id: {
     type: String,
@@ -14,7 +13,7 @@ const orderSchema = new Schema({
   },
 
   userId: {
-    type: String
+    type: String,
   },
 
   client: {
@@ -30,7 +29,7 @@ const orderSchema = new Schema({
     },
 
     product: {
-      type: Mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
     },
   }],
@@ -50,10 +49,6 @@ const orderSchema = new Schema({
     default: Date.now,
     required: true,
   },
-
-
-
-
 });
 
-module.exports = model('Order', orderSchema)
+module.exports = model('Order', orderSchema);

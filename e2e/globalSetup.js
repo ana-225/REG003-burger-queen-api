@@ -1,5 +1,7 @@
 const path = require('path');
-const { spawn } = require('child_process');
+const {
+   spawn
+} = require('child_process');
 const nodeFetch = require('node-fetch');
 const kill = require('tree-kill');
 const mongoSetup = require('@shelf/jest-mongodb/setup');
@@ -38,9 +40,11 @@ const fetch = (url, opts = {}) => nodeFetch(`${baseUrl}${url}`, {
     ...opts.headers,
   },
   ...(
-    opts.body && typeof opts.body !== 'string'
-      ? { body: JSON.stringify(opts.body) }
-      : {}
+    opts.body && typeof opts.body !== 'string' ?
+    {
+      body: JSON.stringify(opts.body)
+    } :
+    {}
   ),
 });
 
@@ -57,14 +61,17 @@ const fetchAsAdmin = (url, opts) => fetchWithAuth(__e2e.adminToken)(url, opts);
 const fetchAsTestUser = (url, opts) => fetchWithAuth(__e2e.testUserToken)(url, opts);
 
 const createTestUser = () => fetchAsAdmin('/users', {
-  method: 'POST',
-  body: __e2e.testUserCredentials,
-})
+    method: 'POST',
+    body: __e2e.testUserCredentials,
+  })
   .then((resp) => {
     if (resp.status !== 200) {
       throw new Error('Could not create test user');
     }
-    return fetch('/auth', { method: 'POST', body: __e2e.testUserCredentials });
+    return fetch('/auth', {
+      method: 'POST',
+      body: __e2e.testUserCredentials
+    });
   })
   .then((resp) => {
     if (resp.status !== 200) {
@@ -72,12 +79,16 @@ const createTestUser = () => fetchAsAdmin('/users', {
     }
     return resp.json();
   })
-  .then(({ token }) => Object.assign(__e2e, { testUserToken: token }));
+  .then(({
+    token
+  }) => Object.assign(__e2e, {
+    testUserToken: token
+  }));
 
 const checkAdminCredentials = () => fetch('/auth', {
-  method: 'POST',
-  body: __e2e.adminUserCredentials,
-})
+    method: 'POST',
+    body: __e2e.adminUserCredentials,
+  })
   .then((resp) => {
     if (resp.status !== 200) {
       throw new Error('Could not authenticate as admin user');
@@ -85,7 +96,11 @@ const checkAdminCredentials = () => fetch('/auth', {
 
     return resp.json();
   })
-  .then(({ token }) => Object.assign(__e2e, { adminToken: token }));
+  .then(({
+    token
+  }) => Object.assign(__e2e, {
+    adminToken: token
+  }));
 
 
 const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) => {
@@ -96,16 +111,16 @@ const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) =
   setTimeout(() => {
     fetch('/')
       .then((resp) => (
-        (resp.status !== 200)
-          ? reject(new Error(`GET / responded with ${resp.status}`))
-          : resolve()
+        (resp.status !== 200) ?
+        reject(new Error(`GET / responded with ${resp.status}`)) :
+        resolve()
       ))
       .catch(() => waitForServerToBeReady(retries - 1).then(resolve, reject));
   }, 1000);
 });
 
 
-module.exports = () => new Promise(async(resolve, reject) => {
+module.exports = () => new Promise(async (resolve, reject) => {
   if (process.env.REMOTE_URL) {
     console.info(`Running tests on remote server ${process.env.REMOTE_URL}`);
     return resolve();
@@ -115,47 +130,43 @@ module.exports = () => new Promise(async(resolve, reject) => {
   await setUp();
   process.env.DB_URL = process.env.MONGO_URL;
 
-//mongoSetup().then(() => {
-//   console.info('Staring local server...');
-//    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
-//      cwd: path.resolve(__dirname, '../'),
-//      stdio: ['ignore', 'pipe', 'pipe'],
-//});
-
-  console.info('Staring local server...');
-  const child = spawn('node', ['index.js', process.env.PORT || 8888], {
-    cwd: path.resolve(__dirname, '../'),
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
-
-  Object.assign(__e2e, { childProcessPid: child.pid });
-
-  child.stdout.on('data', (chunk) => {
-    console.info(`\x1b[34m${chunk.toString()}\x1b[0m`);
-  });
-
-  child.stderr.on('data', (chunk) => {
-    const str = chunk.toString();
-    if (/DeprecationWarning/.test(str)) {
-      return;
-    }
-    console.error('child::stderr', str);
-  });
-
-  process.on('uncaughtException', (err) => {
-    console.error('UncaughtException!');
-    console.error(err);
-    kill(child.pid, 'SIGKILL', () => process.exit(1));
-  });
-
-  waitForServerToBeReady()
-    .then(checkAdminCredentials)
-    .then(createTestUser)
-    .then(resolve)
-    .catch((err) => {
-      kill(child.pid, 'SIGKILL', () => reject(err));
+  mongoSetup().then(() => {
+    console.info('Staring local server...');
+    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
+      cwd: path.resolve(__dirname, '../'),
+      stdio: ['ignore', 'pipe', 'pipe'],
     });
+
+    Object.assign(__e2e, {
+      childProcessPid: child.pid
     });
+
+    child.stdout.on('data', (chunk) => {
+      console.info(`\x1b[34m${chunk.toString()}\x1b[0m`);
+    });
+
+    child.stderr.on('data', (chunk) => {
+      const str = chunk.toString();
+      if (/DeprecationWarning/.test(str)) {
+        return;
+      }
+      console.error('child::stderr', str);
+    });
+
+    process.on('uncaughtException', (err) => {
+      console.error('UncaughtException!');
+      console.error(err);
+      kill(child.pid, 'SIGKILL', () => process.exit(1));
+    });
+
+    waitForServerToBeReady()
+      .then(checkAdminCredentials)
+      .then(createTestUser)
+      .then(resolve)
+      .catch((err) => {
+        kill(child.pid, 'SIGKILL', () => reject(err));
+      });
+  });
 });
 
 // Export globals - ugly... :-(

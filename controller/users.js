@@ -1,45 +1,60 @@
-const Users = require("../Models/User");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
+const Users = require('../Models/User');
+const { requireAdmin } = require('../middleware/auth');
 
 module.exports = {
-  getUsers: (req, res) => {
-    Users.find()
-      .then((users) => {
-        const findAdmin = users.find((user) => user.roles.admin === true);
-        if (!findAdmin) {
-          return res.sendStatus(403);
-        }
-        res.status(200).send(users);
-      })
-      .catch(() => {
-        res.sendStatus(401);
-      });
+
+  // GET "Lista de usuarios" - '/users'
+  getUsers: async (req, res, next) => {
+    try {
+      const options = {
+        page: parseInt(req.query.page, 10) || 1,
+        limit: parseInt(req.query.limit, 10) || 10,
+      };
+
+      const allUsers = await Users.paginate({}, options);
+      return res.status(200).json(allUsers);
+    } catch (error) {
+      return next(500);
+    }
   },
+
+  // GET "Busqueda de un usuario segun el id entregado" - '/users/:uid'
+
   getUser: async (req, res, next) => {
     try {
       const { uid } = req.params;
       const findUserById = await Users.findById(uid);
       if (!findUserById) {
         res.sendStatus(404);
+      } else if (req.headers.validated._id !== uid && req.headers.validated.roles.admin === false) {
+        return res.status(403).send('No es admin o la misma usuaria que desea ver sus datos');
       }
       res.status(200).send(findUserById);
     } catch (error) {
       return next(500);
     }
   },
-  createUser: async (req, res, next) => {
+
+  // POST "Crear usuario" - '/users'
+
+  createUser: async (req, res) => {
     try {
-      const { email, password, roles } = req.body;
+      const {
+        email,
+        password,
+        roles,
+      } = req.body;
       const user = {
         email,
         password: bcrypt.hashSync(password, 10),
         roles,
       };
       const verifyEmail = await Users.find({
-        email: email
+        email,
       });
       if (verifyEmail.length !== 0) {
-        return res.status(403).send('Email ya registrado')
+        return res.status(403).send('Email ya registrado');
       }
       const newUser = new Users(user);
       await newUser.save();
@@ -50,23 +65,42 @@ module.exports = {
       };
       res.status(200).send(sendUser);
     } catch (error) {
-      res.status(400).send("Por favor, recuerda ingresar tu contraseña y password.");
+      res.status(400).send('Por favor, recuerda ingresar tu contraseña y password.');
     }
   },
-  updateUser: async (req, res, next) => {
+
+  // PUT "Actualizar usuario" - '/users/:uid'
+
+  updateUser: async (req, res) => {
     try {
-      const { uid } = req.params;
-      const { email, password, roles } = req.body;
-      const user = await Users.findOne({ _id: uid});
+      const {
+        uid,
+      } = req.params;
+      const {
+        email,
+        password,
+        roles,
+      } = req.body;
+      const user = await Users.findOne({
+        _id: uid,
+      });
       if (!user) {
-        return res.status(404).send('No existe el usuario')
+        return res.status(404).send('No existe el usuario');
+      } else if (req.headers.validated._id !== { uid } && req.headers.validated.roles.admin === false) {
+        return res.status(403).send('No es admin o la misma usuaria que desea actualizar sus datos');
+      } else if (roles.admin !== user.roles.admin) {
+        requireAdmin;
       }
       const updateRequest = {
         email: email || user.email,
         password: bcrypt.hashSync(password, 10) || user.password,
-        roles: roles || user.roles
+        roles: roles || user.roles,
       };
-      const updatingUser = await Users.findOneAndUpdate({ _id: uid }, updateRequest, { new: true });
+      const updatingUser = await Users.findOneAndUpdate({
+        _id: uid
+      }, updateRequest, {
+        new: true
+      });
       res.status(200).send(updatingUser);
     } catch (error) {
       res.sendStatus(500)
@@ -74,8 +108,12 @@ module.exports = {
   },
   deleteUser: async (req, res, next) => {
     try {
-      const { uid } = req.params;
-      let deleteById = await Users.findOneAndDelete({ _id: uid });
+      const {
+        uid
+      } = req.params;
+      let deleteById = await Users.findOneAndDelete({
+        _id: uid
+      });
       if (deleteById == null) {
         return res.status(404).send('No existe el usuario')
       }
