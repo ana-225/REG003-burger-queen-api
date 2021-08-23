@@ -1,11 +1,7 @@
-const {
-  Schema,
-  model,
-  Mongoose
-} = require('mongoose')
+const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const userSchema = new Schema({
-
   email: {
     type: String,
     required: true,
@@ -16,7 +12,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    select: false
+    select: false,
   },
 
   roles: {
@@ -26,6 +22,6 @@ const userSchema = new Schema({
     },
   },
 });
-//  userSchema.plugin(loadedAtPlugin)
 
+userSchema.plugin(mongoosePaginate);
 module.exports = model('User', userSchema);

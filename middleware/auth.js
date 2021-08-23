@@ -21,12 +21,11 @@ module.exports = (secret) => (req, resp, next) => {
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
 
     try {
-      const userValidate = await Users.findOne({_id: decodedToken.uid})
+      const userValidate = await Users.findOne({_id: decodedToken.uid});
       if (!userValidate) {
         return next(404);
       }
-      const userValidateObject = userValidate;
-      Object.assign(req.headers, userValidateObject)
+      req.headers.validated = userValidate;
       next()
     } catch (error) {
       return next(403);
@@ -35,22 +34,16 @@ module.exports = (secret) => (req, resp, next) => {
 };
 
 // TODO: decidir por la informacion del request si la usuaria esta autenticada
-module.exports.isAuthenticated = (req) => (!!req.headers.userValidate);
+module.exports.isAuthenticated = (req) => (!!req.headers.validated);
 
 // TODO: decidir por la informacion del request si la usuaria es admin
-module.exports.isAdmin = (req) => (req.headers.userValidate.roles.admin);
+module.exports.isAdmin = (req) => (req.headers.validated.roles.admin);
 
 module.exports.requireAuth = (req, resp, next) => (
-  (!module.exports.isAuthenticated(req)) ?
-  next(401) :
-  next()
+  (!module.exports.isAuthenticated(req)) ? next(401) : next()
 );
 
 module.exports.requireAdmin = (req, resp, next) => (
   // eslint-disable-next-line no-nested-ternary
-  (!module.exports.isAuthenticated(req)) ?
-  next(401) :
-  (!module.exports.isAdmin(req)) ?
-  next(403) :
-  next()
+  (!module.exports.isAuthenticated(req)) ? next(401) : (!module.exports.isAdmin(req)) ? next(403) : next()
 );

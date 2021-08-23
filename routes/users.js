@@ -51,10 +51,6 @@ const initAdminUser = (app, next) => {
   next();
 };
 
-
-
-
-
 /*
  * Diagrama de flujo de una aplicación y petición en node - express :
  *
@@ -87,14 +83,14 @@ module.exports = (app, next) => {
    * @name GET /users ✔
    * @description Lista usuarias ✔
    * @path {GET} /users ✔
-   * @query {String} [page=1] Página del listado a consultar
-   * @query {String} [limit=10] Cantitad de elementos por página
+   * @query {String} [page=1] Página del listado a consultar ✔
+   * @query {String} [limit=10] Cantitad de elementos por página ✔
    * @header {Object} link Parámetros de paginación
    * @header {String} link.first Link a la primera página
    * @header {String} link.prev Link a la página anterior
    * @header {String} link.next Link a la página siguiente
    * @header {String} link.last Link a la última página
-   * @auth Requiere `token` de autenticación y que la usuaria sea **admin**
+   * @auth Requiere `token` de autenticación y que la usuaria sea **admin** ✔
    * @response {Array} users ✔
    * @response {String} users[]._id ✔
    * @response {Object} users[].email ✔
@@ -104,27 +100,25 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación ✔
    * @code {403} si no es ni admin ✔
    */
-  // app.get('/users', requireAdmin, getUsers);
-  app.get('/users', getUsers);
+  app.get('/users', requireAdmin, getUsers);
 
   /**
    * @name GET /users/:uid ✔
    * @description Obtiene información de una usuaria ✔
    * @path {GET} /users/:uid ✔
    * @params {String} :uid `id` o `email` de la usuaria a consultar ✔
-   * @auth Requiere `token` de autenticación y que la usuaria sea **admin** o la usuaria a consultar
+   * @auth Requiere `token` de autenticación y que la usuaria sea **admin** o la usuaria a consultar ✔
    * @response {Object} user ✔
    * @response {String} user._id ✔
    * @response {Object} user.email ✔
    * @response {Object} user.roles ✔
    * @response {Boolean} user.roles.admin ✔
    * @code {200} si la autenticación es correcta ✔
-   * @code {401} si no hay cabecera de autenticación
-   * @code {403} si no es ni admin o la misma usuaria 
+   * @code {401} si no hay cabecera de autenticación ✔
+   * @code {403} si no es ni admin o la misma usuaria ✔
    * @code {404} si la usuaria solicitada no existe ✔
    */
-  // app.get('/users/:uid', requireAuth, (req, resp) => {});
-  app.get('/users/:uid', getUser);
+  app.get('/users/:uid', requireAuth, getUser);
 
   /**
    * @name POST /users ✔
@@ -134,7 +128,7 @@ module.exports = (app, next) => {
    * @body {String} password Contraseña ✔
    * @body {Object} [roles] ✔
    * @body {Boolean} [roles.admin] ✔
-   * @auth Requiere `token` de autenticación y que la usuaria sea **admin**
+   * @auth Requiere `token` de autenticación y que la usuaria sea **admin** ✔
    * @response {Object} user ✔
    * @response {String} user._id ✔
    * @response {Object} user.email ✔
@@ -142,10 +136,9 @@ module.exports = (app, next) => {
    * @response {Boolean} user.roles.admin ✔
    * @code {200} si la autenticación es correcta ✔
    * @code {400} si no se proveen `email` o `password` o ninguno de los dos ✔
-   * @code {401} si no hay cabecera de autenticación
+   * @code {401} si no hay cabecera de autenticación ✔
    * @code {403} si ya existe usuaria con ese `email` ✔
    */
-  // app.post('/users', requireAdmin, (req, resp, next) => {});
   app.post('/users', requireAdmin, createUser);
 
   /**
@@ -165,13 +158,12 @@ module.exports = (app, next) => {
    * @response {Boolean} user.roles.admin ✔
    * @code {200} si la autenticación es correcta 
    * @code {400} si no se proveen `email` o `password` o ninguno de los dos
-   * @code {401} si no hay cabecera de autenticación
-   * @code {403} si no es ni admin o la misma usuaria
-   * @code {403} una usuaria no admin intenta de modificar sus `roles`
+   * @code {401} si no hay cabecera de autenticación  ✔
+   * @code {403} si no es ni admin o la misma usuaria ✔
+   * @code {403} una usuaria no admin intenta de modificar sus `roles` ✔
    * @code {404} si la usuaria solicitada no existe ✔
    */
-  // app.put('/users/:uid', requireAuth, (req, resp, next) => {});
-  app.put('/users/:uid', updateUser);
+  app.put('/users/:uid', requireAuth, updateUser);
 
   /**
    * @name DELETE /users ✔
