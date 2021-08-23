@@ -19,9 +19,6 @@ getProducts: async (req, res, next)=> {
     }
 },
 
-
-
-
 //GET "Datos de un producto" - '/product/:productId'
 
 getProduct: async (req, res, next)=> {
@@ -101,11 +98,9 @@ deleteProduct: async (req, res, next) =>{
         //     res.status(403).send('No esta autorizado');
         // }
         const findProduct = await Product.findOne({_id:productId});
-        console.log('esta pasando por try');
         await Product.findOneAndDelete({_id:productId});
         return res.status(200).json(findProduct);
     }catch(err){
-        console.log('esta pasando por catch');
         next(404);  
       }
 }
