@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const Users = require('../Models/User');
-const { requireAdmin } = require('../middleware/auth');
+const { requireAdmin, requireAuth } = require('../middleware/auth');
+const { pagination, isEmailOrID, isAValidEmail, isAValidPassword, verifyRoles } = require('../utils/utils') 
 
 module.exports = {
 
@@ -11,9 +12,11 @@ module.exports = {
         page: parseInt(req.query.page, 10) || 1,
         limit: parseInt(req.query.limit, 10) || 10,
       };
-
       const allUsers = await Users.paginate({}, options);
-      return res.status(200).json(allUsers);
+      const url = `${req.protocol}://${req.get('host') + req.path}`;
+      const links = pagination(allUsers, url, options.page, options.limit, allUsers.totalPages);
+      res.links(links);
+      return res.status(200).json(allUsers.docs);
     } catch (error) {
       return next(500);
     }
@@ -24,13 +27,15 @@ module.exports = {
   getUser: async (req, res, next) => {
     try {
       const { uid } = req.params;
-      const findUserById = await Users.findById(uid);
-      if (!findUserById) {
-        res.sendStatus(404);
-      } else if (req.headers.validated._id !== uid && req.headers.validated.roles.admin === false) {
+      const validateUid = isEmailOrID(uid);
+      const findUserByIdOrEmail = await Users.findOne(validateUid);
+      const userAuth = req.headers.validated;
+      if (!findUserByIdOrEmail) {
+        res.sendStatus(404); 
+      } else if (!userAuth.roles.admin && !(userAuth.id === uid || userAuth.email === uid)) {
         return res.status(403).send('No es admin o la misma usuaria que desea ver sus datos');
       }
-      res.status(200).send(findUserById);
+      res.status(200).send(findUserByIdOrEmail);
     } catch (error) {
       return next(500);
     }
@@ -40,11 +45,12 @@ module.exports = {
 
   createUser: async (req, res) => {
     try {
-      const {
-        email,
-        password,
-        roles,
-      } = req.body;
+      const { email, password, roles, } = req.body;
+      if (!isAValidEmail(email) || !isAValidPassword(password)) {
+        console.log (isAValidEmail(email))
+        console.log(isAValidPassword(password))
+        return res.status(400).send('Por favor ingresa email y contraseña validos');
+      }
       const user = {
         email,
         password: bcrypt.hashSync(password, 10),
@@ -73,37 +79,24 @@ module.exports = {
 
   updateUser: async (req, res) => {
     try {
-      const {
-        uid,
-      } = req.params;
-      const {
-        email,
-        password,
-        roles,
-      } = req.body;
-      const user = await Users.findOne({
-        _id: uid,
-      });
+      const { uid } = req.params;
+      const update  = req.body;
+      const validateUid = isEmailOrID(uid);
+      const userAuth = req.headers.validated;
+      const user = await Users.findOne(validateUid).select('+password');
       if (!user) {
         return res.status(404).send('No existe el usuario');
-      } else if (req.headers.validated._id !== { uid } && req.headers.validated.roles.admin === false) {
-        return res.status(403).send('No es admin o la misma usuaria que desea actualizar sus datos');
-      } else if (roles.admin !== user.roles.admin) {
-        requireAdmin;
-      }
-      const updateRequest = {
-        email: email || user.email,
-        password: bcrypt.hashSync(password, 10) || user.password,
-        roles: roles || user.roles,
-      };
-      const updatingUser = await Users.findOneAndUpdate({
-        _id: uid
-      }, updateRequest, {
-        new: true
-      });
+      } else if (!userAuth.roles.admin && !(userAuth.id === uid || userAuth.email === uid)) {
+        return res.status(403).send('No es admin o la misma usuaria que desea actualizar sus datos.');
+      } else if (update.roles.admin !== user.roles.admin && (!userAuth.roles.admin)) {
+        return res.status(403).send('Debes ser administrador para modificar tus roles');    
+      } 
+      const prueba = verifyRoles(update);
+      console.log(prueba)
+      const updatingUser = await Users.findOneAndUpdate( validateUid, {$set: prueba}, {new: true});
       res.status(200).send(updatingUser);
     } catch (error) {
-      res.sendStatus(500)
+      res.status(400).send('Debes ingresar email y password para poder actualizar.')
     }
   },
   deleteUser: async (req, res, next) => {

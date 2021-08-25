@@ -156,7 +156,7 @@ module.exports = (app, next) => {
    * @response {Object} user.email ✔
    * @response {Object} user.roles ✔
    * @response {Boolean} user.roles.admin ✔
-   * @code {200} si la autenticación es correcta 
+   * @code {200} si la autenticación es correcta ✔
    * @code {400} si no se proveen `email` o `password` o ninguno de los dos
    * @code {401} si no hay cabecera de autenticación  ✔
    * @code {403} si no es ni admin o la misma usuaria ✔
