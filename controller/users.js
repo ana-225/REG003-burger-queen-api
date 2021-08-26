@@ -101,16 +101,17 @@ module.exports = {
   },
   deleteUser: async (req, res, next) => {
     try {
-      const {
-        uid
-      } = req.params;
-      let deleteById = await Users.findOneAndDelete({
-        _id: uid
-      });
-      if (deleteById == null) {
+      const { uid } = req.params;
+      const validateUid = isEmailOrID(uid);
+      const userAuth = req.headers.validated;
+      const findUser = await Users.findOne (validateUid)
+      if (findUser == null) {
         return res.status(404).send('No existe el usuario')
+      } else if (!userAuth.roles.admin && !(userAuth.id === uid || userAuth.email === uid)) {
+        return res.status(403).send('No es admin o la misma usuaria que desea actualizar sus datos.');
       }
-      res.send(deleteById);
+      let userToDelete = await Users.findOneAndDelete(validateUid).select('-password');
+      res.send(userToDelete);
     } catch (error) {
       console.log(error)
     }
