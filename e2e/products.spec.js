@@ -103,7 +103,7 @@ describe('PUT /products/:productid', () => {
       body: { name: 'Test', price: 10 },
     })
       .then((resp) => {
-        console.log(resp)
+        expect(resp.status).toBe(200);
         return resp.json();
       })
       .then((json) => fetchAsTestUser(`/products/${json._id}`, {
