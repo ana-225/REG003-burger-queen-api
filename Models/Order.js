@@ -1,20 +1,15 @@
+const mongoose = require ('mongoose')
 const {
   Schema,
   model,
-  Mongoose
+  
 } = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const orderSchema = new Schema({
 
-
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-
   userId: {
-    type: String
+    type: String,
   },
 
   client: {
@@ -30,7 +25,7 @@ const orderSchema = new Schema({
     },
 
     product: {
-      type: Mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
     },
   }],
@@ -51,9 +46,7 @@ const orderSchema = new Schema({
     required: true,
   },
 
-
-
-
 });
+orderSchema.plugin(mongoosePaginate);
+module.exports = model('Order', orderSchema);
 
-module.exports = model('Order', orderSchema)

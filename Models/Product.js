@@ -1,10 +1,8 @@
-const {
-  Schema,
-  model
-} = require('mongoose')
-const mongoosePaginate = require('mongoose-paginate-v2')
-const productSchema = new Schema({
+const { Schema, model } = require('mongoose');
 
+const mongoosePaginate = require('mongoose-paginate-v2');
+
+const productSchema = new Schema({
 
   name: {
     type: String,
@@ -17,13 +15,18 @@ const productSchema = new Schema({
     required: true,
   },
 
-  imagen: {
+  image: {
     type: String,
   },
 
   type: {
     type: String,
-  }
+  },
+
+  dateEntry: {
+    type: Date,
+    default: new Date(),
+  },
 
 });
 
