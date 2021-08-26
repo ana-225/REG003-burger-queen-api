@@ -63,28 +63,19 @@ module.exports = {
   },
 
   //PUT "Actualizar producto" -'/product/:productId'  
-
   updateProduct: async (req, res, next) => {
-    // if(req.userauth.roles.admin === false) {
-    //     res.sendStatus(403)
-
-    // };
-    const {
-      name,
-      price
-    } = req.body;
     try {
+      const { name, price } = req.body;
       const productId = req.params.productId;
-      if (price === 'undefined' || name === 'undefined') {
-        res.status(400).send('No se indica nombre o precio del producto');
-      };
+      
+
       const productUpdate = await Product.findOneAndUpdate({
         _id: productId
       }, {
         $set: req.body
       }, {
         new: true
-      }, );
+      });
       return res.status(200).json(productUpdate);
     } catch (err) {
       next(404);
@@ -100,9 +91,8 @@ module.exports = {
       //     res.status(403).send('No esta autorizado');
       // }
       const findProduct = await Product.findOne({ _id: productId });
-      const prueba = await Product.findOneAndDelete({ _id: productId });
-      console.log(prueba)
-      return res.status(200).json(findProduct);
+      const deleteProduct = await Product.findOneAndDelete({ _id: productId });
+      return res.status(200).json(deleteProduct);
     } catch (err) {
       next(404);
     }

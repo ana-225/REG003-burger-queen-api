@@ -40,7 +40,7 @@ const initAdminUser = (app, next) => {
 
       const newAdminUser = new User(adminUser);
       newAdminUser.save();
-      console.info('el usuario ha sido creado');
+      console.info('el usuario Admin ha sido creado');
     })
 
     .catch((err) => {
