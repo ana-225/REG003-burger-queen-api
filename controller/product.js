@@ -1,7 +1,10 @@
 const {
-  isAdmin,
+  isAdmin
 } = require('../middleware/auth');
 const Product = require('../Models/Product');
+const {
+  pagination
+} = require('../utils/utils')
 
 module.exports = {
   // GET "Lista de productos" - '/products' 
@@ -11,59 +14,51 @@ module.exports = {
         page: parseInt(req.query.page, 10) || 1,
         limit: parseInt(req.query.limit, 10) || 10,
       };
-      const products = await Product.paginate({}, options);
-      return res.status(200).json(products);
+      const allProducts = await Product.paginate({}, options);
+      const url = `${req.protocol}://${req.get('host') + req.path}`;
+      const links = pagination(allProducts, url, options.page, options.limit, allProducts.totalPages);
+      res.links(links);
+      return res.status(200).json(allProducts.docs);
     } catch (err) {
       next(err);
     }
-},
+  },
 
-//GET "Datos de un producto" - '/product/:productId'
-
-getProduct: async (req, res, next)=> {
-    try{
-        const productId =req.params.productId;
-        console.log(productId);
-        if (!productId){
-            res.sendStatus(401);
-        }
-        const product = await Product.findOne({_id:productId});
-        if (!product){
-            res.sendStatus(404);
-        }
-        return res.status(200).json(product);
-   
-    } catch (err){
-  
-        return next(404);
-
+  //GET "Datos de un producto" - '/product/:productId'
+  getProduct: async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const product = await Product.findOne({_id: productId});
+      if (!product) {
+        res.sendStatus(404);
+      }
+      return res.status(200).json(product);
+    } catch (err) {
+      return next(404);
     }
   },
 
   //Post "Crear producto" - '/products'
 
   createProduct: async (req, resp, next) => {
-    const {
-      name,
-      price
-    } = req.body;
+    const { name, price, image, type, dateEntry } = req.body;
     try {
-      if (Object.keys(req.body).length === 0) {
-        res.sendStatus(400);
+      if (!name || !price ) {
+        resp.sendStatus(400);
       };
       const newProduct = new Product({
         name,
         price,
+        image,
+        type,
+        dateEntry,
       });
+      
       const productSave = await newProduct.save();
-      console.log(productSave);
-      return resp.status(200).send({
-        _id: productSave._id,
-        name: productSave.name,
-        price: productSave.price,
-      });
+      
+      return resp.status(200).send(productSave);
     } catch (err) {
-      next()
+      console.log(err)
     }
   },
 
@@ -100,17 +95,16 @@ getProduct: async (req, res, next)=> {
 
   deleteProduct: async (req, res, next) => {
     const productId = req.params.productId;
-
-    try{
-        // if(!isAdmin(req)) {
-        //     res.status(403).send('No esta autorizado');
-        // }
-        const findProduct = await Product.findOne({_id:productId});
-        await Product.findOneAndDelete({_id:productId});
-        return res.status(200).json(findProduct);
-    }catch(err){
-        next(404);  
-      }
-}
-
+    try {
+      // if(!isAdmin(req)) {
+      //     res.status(403).send('No esta autorizado');
+      // }
+      const findProduct = await Product.findOne({ _id: productId });
+      const prueba = await Product.findOneAndDelete({ _id: productId });
+      console.log(prueba)
+      return res.status(200).json(findProduct);
+    } catch (err) {
+      next(404);
+    }
+  }
 };

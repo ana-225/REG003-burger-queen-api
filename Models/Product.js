@@ -15,12 +15,17 @@ const productSchema = new Schema({
     required: true,
   },
 
-  imagen: {
+  image: {
     type: String,
   },
 
   type: {
     type: String,
+  },
+
+  dateEntry: {
+    type: Date,
+    default: new Date(),
   },
 
 });
