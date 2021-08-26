@@ -58,7 +58,6 @@
 //         expect(json.products[0].product.price).toBe(10);
 //       })
 //   ));
-
 //   it('should create order as admin', () => (
 //     Promise.all([
 //       fetchAsAdmin('/products', {

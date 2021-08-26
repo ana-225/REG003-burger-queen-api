@@ -35,7 +35,9 @@
 //         return resp.json();
 //       })
 //       .then((json) => {
+
 //         console.log(json)
+
 //         expect(Array.isArray(json)).toBe(true);
 //         expect(json.length > 0).toBe(true);
 //         // TODO: Check that the results are actually the "expected" user objects
@@ -50,6 +52,7 @@
 //       })
 //       .then(({ headers, json }) => {
 //         const linkHeader = parseLinkHeader(headers.get('link'));
+
 //         const nextUrlObj = url.parse(linkHeader.next);
 //         const lastUrlObj = url.parse(linkHeader.last);
 //         const nextQuery = qs.parse(nextUrlObj.query);
@@ -59,7 +62,7 @@
 //         expect(nextQuery.page).toBe('2');
 //         expect(lastQuery.limit).toBe('1');
 //         expect(lastQuery.page >= 2).toBe(true);
-     
+
 //         expect(Array.isArray(json)).toBe(true);
 //         expect(json.length).toBe(1);
 //         expect(json[0]).toHaveProperty('_id');
@@ -290,7 +293,9 @@
 //   ));
 
 //   it('should delete own user', () => {
+
 //     const credentials = { email: `foo-${Date.now()}@bar.baz`, password: '123456' };
+
 //     return fetchAsAdmin('/users', { method: 'POST', body: credentials })
 //       .then((resp) => expect(resp.status).toBe(200))
 //       .then(() => fetch('/auth', { method: 'POST', body: credentials }))
@@ -307,7 +312,9 @@
 //   });
 
 //   it('should delete other user as admin', () => {
+
 //     const credentials = { email: `foo-${Date.now()}@bar.baz`, password: '123456' };
+
 //     return fetchAsAdmin('/users', { method: 'POST', body: credentials })
 //       .then((resp) => expect(resp.status).toBe(200))
 //       .then(() => fetchAsAdmin(`/users/${credentials.email}`, { method: 'DELETE' }))
