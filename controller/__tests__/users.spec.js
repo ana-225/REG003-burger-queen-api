@@ -1,9 +1,16 @@
 const {
-  getUsers,
-} = require('../../controller/users');
+  pagination, isEmailOrID 
+} = require('../../utils/utils');
 
-describe('getUsers', () => {
-  it('should get users collection', (done) => {
-    done();
+const email = 'katherinne.g@hotmail.com'
+
+describe('isEmailOrID ', () => {
+  it('should return an object with the id or email', (done) => {
+    expect(isEmailOrID(email)).toBe({email: email});
   });
 });
+// describe('isEmailOrID ', () => {
+//   it('should return an object with the id or email', (done) => {
+//     done();
+//   });
+// });
