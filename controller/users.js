@@ -47,8 +47,6 @@ module.exports = {
     try {
       const { email, password, roles, } = req.body;
       if (!isAValidEmail(email) || !isAValidPassword(password)) {
-        console.log (isAValidEmail(email))
-        console.log(isAValidPassword(password))
         return res.status(400).send('Por favor ingresa email y contraseña validos');
       }
       const user = {
@@ -91,9 +89,8 @@ module.exports = {
       } else if (update.roles.admin !== user.roles.admin && (!userAuth.roles.admin)) {
         return res.status(403).send('Debes ser administrador para modificar tus roles');    
       } 
-      const prueba = verifyRoles(update);
-      console.log(prueba)
-      const updatingUser = await Users.findOneAndUpdate( validateUid, {$set: prueba}, {new: true});
+      const verify = verifyRoles(update);
+      const updatingUser = await Users.findOneAndUpdate( validateUid, {$set: verify}, {new: true});
       res.status(200).send(updatingUser);
     } catch (error) {
       res.status(400).send('Debes ingresar email y password para poder actualizar.')

@@ -1,6 +1,3 @@
-const {
-  isAdmin
-} = require('../middleware/auth');
 const Product = require('../Models/Product');
 const {
   pagination
@@ -44,7 +41,7 @@ module.exports = {
     const { name, price, image, type, dateEntry } = req.body;
     try {
       if (!name || !price ) {
-        resp.sendStatus(400);
+        return resp.sendStatus(400);
       };
       const newProduct = new Product({
         name,
@@ -64,15 +61,28 @@ module.exports = {
 
   //PUT "Actualizar producto" -'/product/:productId'  
   updateProduct: async (req, res, next) => {
+    
+    const productId = req.params.productId;
     try {
-      const { name, price } = req.body;
-      const productId = req.params.productId;
       
+      const findProduct = await Product.findOne({_id: productId});
+      
+      if (Object.keys(req.body).length === 0) {
+        return res.sendStatus(400);
+      } else if (!findProduct) {
+        return res.sendStatus(404);
+      }
 
+      const updateObject = {
+        name: (req.body.name || findProduct.name),
+        price: (req.body.price || findProduct.price),
+        image: (req.body.image || findProduct.image),
+        type: (req.body.type || findProduct.type),
+      }
       const productUpdate = await Product.findOneAndUpdate({
         _id: productId
       }, {
-        $set: req.body
+        $set: updateObject
       }, {
         new: true
       });
@@ -83,13 +93,9 @@ module.exports = {
   },
 
   //DELETE "Eliminar producto" - '/products/:productId'
-
   deleteProduct: async (req, res, next) => {
     const productId = req.params.productId;
     try {
-      // if(!isAdmin(req)) {
-      //     res.status(403).send('No esta autorizado');
-      // }
       const findProduct = await Product.findOne({ _id: productId });
       const deleteProduct = await Product.findOneAndDelete({ _id: productId });
       return res.status(200).json(deleteProduct);
