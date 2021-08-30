@@ -112,7 +112,7 @@ module.exports = (app, nextMain) => {
    */
   // app.put('/orders/:orderId', requireAuth, (req, resp, next) => {
   // });
-  app.put('/orders/:orderId',requireAdmin, updateOrder)
+  app.put('/orders/:orderId',requireAdmin,requireAuth, updateOrder)
 
   /**
    * @name DELETE /orders

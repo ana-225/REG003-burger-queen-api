@@ -1,7 +1,5 @@
 const path = require('path');
-const {
-   spawn
-} = require('child_process');
+const { spawn } = require('child_process');
 const nodeFetch = require('node-fetch');
 const kill = require('tree-kill');
 const mongoSetup = require('@shelf/jest-mongodb/setup');
@@ -9,7 +7,6 @@ const config = require('../config');
 
 const port = process.env.PORT || 8888;
 const baseUrl = process.env.REMOTE_URL || `http://127.0.0.1:${port}`;
-
 
 const __e2e = {
   port,
@@ -31,22 +28,18 @@ const __e2e = {
   // testObjects: [],
 };
 
-
 const fetch = (url, opts = {}) => nodeFetch(`${baseUrl}${url}`, {
   ...opts,
   headers: {
     'content-type': 'application/json',
     ...opts.headers,
   },
-  ...(
-    opts.body && typeof opts.body !== 'string' ?
-    {
-      body: JSON.stringify(opts.body)
-    } :
-    {}
-  ),
+  ...(opts.body && typeof opts.body !== 'string'
+    ? {
+      body: JSON.stringify(opts.body),
+    }
+    : {}),
 });
-
 
 const fetchWithAuth = (token) => (url, opts = {}) => fetch(url, {
   ...opts,
@@ -60,16 +53,16 @@ const fetchAsAdmin = (url, opts) => fetchWithAuth(__e2e.adminToken)(url, opts);
 const fetchAsTestUser = (url, opts) => fetchWithAuth(__e2e.testUserToken)(url, opts);
 
 const createTestUser = () => fetchAsAdmin('/users', {
-    method: 'POST',
-    body: __e2e.testUserCredentials,
-  })
+  method: 'POST',
+  body: __e2e.testUserCredentials,
+})
   .then((resp) => {
     if (resp.status !== 200) {
       throw new Error('Could not create test user');
     }
     return fetch('/auth', {
       method: 'POST',
-      body: __e2e.testUserCredentials
+      body: __e2e.testUserCredentials,
     });
   })
   .then((resp) => {
@@ -78,16 +71,14 @@ const createTestUser = () => fetchAsAdmin('/users', {
     }
     return resp.json();
   })
-  .then(({
-    token
-  }) => Object.assign(__e2e, {
-    testUserToken: token
+  .then(({ token }) => Object.assign(__e2e, {
+    testUserToken: token,
   }));
 
 const checkAdminCredentials = () => fetch('/auth', {
-    method: 'POST',
-    body: __e2e.adminUserCredentials,
-  })
+  method: 'POST',
+  body: __e2e.adminUserCredentials,
+})
   .then((resp) => {
     if (resp.status !== 200) {
       throw new Error('Could not authenticate as admin user');
@@ -95,12 +86,9 @@ const checkAdminCredentials = () => fetch('/auth', {
 
     return resp.json();
   })
-  .then(({
-    token
-  }) => Object.assign(__e2e, {
-    adminToken: token
+  .then(({ token }) => Object.assign(__e2e, {
+    adminToken: token,
   }));
-
 
 const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) => {
   if (!retries) {
@@ -109,15 +97,12 @@ const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) =
 
   setTimeout(() => {
     fetch('/')
-      .then((resp) => (
-        (resp.status !== 200) ?
-        reject(new Error(`GET / responded with ${resp.status}`)) :
-        resolve()
-      ))
+      .then((resp) => (resp.status !== 200
+        ? reject(new Error(`GET / responded with ${resp.status}`))
+        : resolve()))
       .catch(() => waitForServerToBeReady(retries - 1).then(resolve, reject));
   }, 1000);
 });
-
 
 module.exports = () => new Promise(async (resolve, reject) => {
   if (process.env.REMOTE_URL) {
@@ -126,24 +111,23 @@ module.exports = () => new Promise(async (resolve, reject) => {
   }
 
   // TODO: Configurar DB de tests
- 
 
-mongoSetup().then(() => {
-  process.env.DB_URL = process.env.MONGO_URL;
-  console.info('Staring local server...');
-   const child = spawn('node', ['index.js', process.env.PORT || 8888], {
-     cwd: path.resolve(__dirname, '../'),
-     stdio: ['ignore', 'pipe', 'pipe'],
-});
+  mongoSetup().then(() => {
+    process.env.DB_URL = process.env.MONGO_URL;
+    console.info('Staring local server...');
+    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
+      cwd: path.resolve(__dirname, '../'),
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
 
-Object.assign(__e2e, { childProcessPid: child.pid });
+    Object.assign(__e2e, { childProcessPid: child.pid });
 
-  child.stdout.on('data', (chunk) => {
-    console.info(`\x1b[34m${chunk.toString()}\x1b[0m`);
-  });
+    child.stdout.on('data', (chunk) => {
+      console.info(`\x1b[34m${chunk.toString()}\x1b[0m`);
+    });
 
     Object.assign(__e2e, {
-      childProcessPid: child.pid
+      childProcessPid: child.pid,
     });
 
     child.stdout.on('data', (chunk) => {

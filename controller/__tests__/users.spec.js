@@ -1,12 +1,12 @@
 const {
-  pagination, isEmailOrID 
+  pagination, isEmailOrID,
 } = require('../../utils/utils');
 
-const email = 'katherinne.g@hotmail.com'
+const email = 'katherinne.g@hotmail.com';
 
 describe('isEmailOrID ', () => {
   it('should return an object with the id or email', (done) => {
-    expect(isEmailOrID(email)).toBe({email: email});
+    expect(isEmailOrID(email)).toBe({ email: email });
   });
 });
 // describe('isEmailOrID ', () => {
