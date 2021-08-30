@@ -55,11 +55,11 @@ module.exports = {
 
         try {
             if (Object.keys(req.body).length === 0) {
-                return res.status(400).send('No hay productos en la orden');
+                return res.status(400).send();
 
             };
             if (!products || products.length === 0) {
-                return res.status(400).send();
+                return res.status(400).send('No hay productos en la orden');
             };
             const newOrder = new Order({
                 userId,
@@ -83,8 +83,8 @@ module.exports = {
 
     // //PUT "Modificar orden" -'/orders/:orderId'  
 
-    updateOrder: async (req, res,next) => {
-        const {orderId, status}= req.body;
+    updateOrder: async (req, res, next) => {
+        // const {orderId, status}= req.body;
         // if(req.userauth.roles.admin === false) {
         //     res.sendStatus(403)
         //  
@@ -93,13 +93,14 @@ module.exports = {
         //     return next(400);
         //   }
 
-        
-        try{
-            
-            const orderId = req.params.orderId;
+        const { orderId } = req.params.orderId;
+        const { status } = req.body;
+        try {
+
+
             if (Object.keys(req.body).length === 0) {
-                return res.status(404).send('No hay orden');
-                
+                return res.status(400).send('');
+
             };
             if (!isObjectId(orderId)) return next(400);
             const statusOrder = [
@@ -107,41 +108,33 @@ module.exports = {
                 'canceled',
                 'delivering',
                 'delivered',
-              ];
+            ];
             if (status && !statusOrder.includes(status)) return next(400);
             console.log(1, orderId);
-            
-        const orderUpdate = await Order.findOneAndUpdate(
-            {_id: orderId},
-            {$set: req.body},
-            {new: true},
-        );
-        console.log(3, orderUpdate)
-        return res.status(200).json(orderUpdate);
-        } catch(err){
-          next(404);  
+            const orderUpdate = await Order.findOneAndUpdate(
+                { _id: orderId },
+                { $set: req.body },
+                { new: true },
+            );
+            console.log(3, orderUpdate)
+            return res.status(200).json(orderUpdate);
+        } catch (err) {
+            next(404);
         }
     },
 
     // //DELETE "Eliminar orden" - '/orders/:orderId'
 
     deleteOrder: async (req, res, next) => {
-
-
-
         try {
             const orderId = req.params.orderId;
             console.log(orderId);
-            if (!req.headers.validated) {
-                return res.status(401).send('No esta autenticado')
-            };
-            if (!isObjectId(orderId)) {
-                return res.status(404).send('No se encuentra orden');
-            };
+      
             const findOrder = await Order.findOne({ _id: orderId });
-
-            await Order.findOneAndDelete({ _id: orderId });
-            return res.status(200).json(findOrder);
+             
+             console.log(1, findOrder);
+            await Order.findByIdAndDelete({ _id: orderId });
+            return res.status(200).send(findOrder);
         } catch (err) {
             next(404);
         }
