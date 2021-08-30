@@ -74,23 +74,23 @@ module.exports = (app, nextMain) => {
   app.post('/products', requireAdmin, createProduct);
 
   /**
-   * @name PUT /products
-   * @description Modifica un producto
-   * @path {PUT} /products
-   * @params {String} :productId `id` del producto
-   * @auth Requiere `token` de autenticación y que el usuario sea **admin**
-   * @body {String} [name] Nombre
-   * @body {Number} [price] Precio
-   * @body {String} [imagen]  URL a la imagen
-   * @body {String} [type] Tipo/Categoría
-   * @response {Object} product
-   * @response {String} product._id Id
-   * @response {String} product.name Nombre
-   * @response {Number} product.price Precio
-   * @response {URL} product.image URL a la imagen
-   * @response {String} product.type Tipo/Categoría
-   * @response {Date} product.dateEntry Fecha de creación
-   * @code {200} si la autenticación es correcta
+   * @name PUT /products ✔
+   * @description Modifica un producto ✔
+   * @path {PUT} /products ✔
+   * @params {String} :productId `id` del producto ✔
+   * @auth Requiere `token` de autenticación y que el usuario sea **admin** ✔
+   * @body {String} [name] Nombre ✔
+   * @body {Number} [price] Precio ✔
+   * @body {String} [imagen]  URL a la imagen ✔
+   * @body {String} [type] Tipo/Categoría ✔
+   * @response {Object} product ✔
+   * @response {String} product._id Id ✔
+   * @response {String} product.name Nombre ✔
+   * @response {Number} product.price Precio ✔
+   * @response {URL} product.image URL a la imagen ✔
+   * @response {String} product.type Tipo/Categoría ✔
+   * @response {Date} product.dateEntry Fecha de creación ✔
+   * @code {200} si la autenticación es correcta ✔
    * @code {400} si no se indican ninguna propiedad a modificar
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es admin
@@ -99,19 +99,19 @@ module.exports = (app, nextMain) => {
   app.put('/products/:productId', requireAdmin, updateProduct);
 
   /**
-   * @name DELETE /products
-   * @description Elimina un producto
-   * @path {DELETE} /products
-   * @params {String} :productId `id` del producto
-   * @auth Requiere `token` de autenticación y que el usuario sea **admin**
-   * @response {Object} product
-   * @response {String} product._id Id
-   * @response {String} product.name Nombre
-   * @response {Number} product.price Precio
-   * @response {URL} product.image URL a la imagen
-   * @response {String} product.type Tipo/Categoría
-   * @response {Date} product.dateEntry Fecha de creación
-   * @code {200} si la autenticación es correcta
+   * @name DELETE /products ✔
+   * @description Elimina un producto ✔
+   * @path {DELETE} /products ✔
+   * @params {String} :productId `id` del producto ✔
+   * @auth Requiere `token` de autenticación y que el usuario sea **admin** ✔
+   * @response {Object} product ✔
+   * @response {String} product._id Id ✔
+   * @response {String} product.name Nombre ✔
+   * @response {Number} product.price Precio ✔
+   * @response {URL} product.image URL a la imagen ✔
+   * @response {String} product.type Tipo/Categoría ✔
+   * @response {Date} product.dateEntry Fecha de creación ✔
+   * @code {200} si la autenticación es correcta ✔
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es ni admin
    * @code {404} si el producto con `productId` indicado no existe

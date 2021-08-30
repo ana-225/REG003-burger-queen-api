@@ -54,17 +54,18 @@ module.exports = {
   },
   //PUT "Actualizar producto" -'/product/:productId'  
   updateProduct: async (req, res, next) => {
+    
     const productId = req.params.productId;
     try {
+      
       const findProduct = await Product.findOne({_id: productId});
+      
       if (Object.keys(req.body).length === 0) {
-        console.log('cyo en if 1')
         return res.sendStatus(400);
       } else if (!findProduct) {
         return res.sendStatus(404);
-      } else if (typeof (productId.price) !== 'number'){
-        console.log('no es number ')
       }
+
       const updateObject = {
         name: (req.body.name || findProduct.name),
         price: (req.body.price || findProduct.price),

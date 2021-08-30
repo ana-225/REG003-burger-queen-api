@@ -108,7 +108,7 @@ describe('PUT /products/:productid', () => {
       })
       .then((json) => fetchAsTestUser(`/products/${json._id}`, {
         method: 'PUT',
-        body: { price: 20 },
+        body: { price: 20, },
       }))
       .then((resp) => expect(resp.status).toBe(403))
   ));
