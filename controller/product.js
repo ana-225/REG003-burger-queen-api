@@ -2,7 +2,6 @@ const Product = require('../Models/Product');
 const {
   pagination
 } = require('../utils/utils')
-
 module.exports = {
   // GET "Lista de productos" - '/products' 
   getProducts: async (req, res, next) => {
@@ -20,7 +19,6 @@ module.exports = {
       next(err);
     }
   },
-
   //GET "Datos de un producto" - '/product/:productId'
   getProduct: async (req, res, next) => {
     try {
@@ -34,9 +32,7 @@ module.exports = {
       return next(404);
     }
   },
-
   //Post "Crear producto" - '/products'
-
   createProduct: async (req, resp, next) => {
     const { name, price, image, type, dateEntry } = req.body;
     try {
@@ -50,15 +46,12 @@ module.exports = {
         type,
         dateEntry,
       });
-      
       const productSave = await newProduct.save();
-      
       return resp.status(200).send(productSave);
     } catch (err) {
-      console.log(err)
+      console.log(404)
     }
   },
-
   //PUT "Actualizar producto" -'/product/:productId'  
   updateProduct: async (req, res, next) => {
     
@@ -88,10 +81,10 @@ module.exports = {
       });
       return res.status(200).json(productUpdate);
     } catch (err) {
+      console.log('cayo en el catch')
       next(404);
     }
   },
-
   //DELETE "Eliminar producto" - '/products/:productId'
   deleteProduct: async (req, res, next) => {
     const productId = req.params.productId;
