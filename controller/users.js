@@ -2,11 +2,8 @@
 /* eslint-disable max-len */
 const bcrypt = require('bcrypt');
 const Users = require('../Models/User');
-const { requireAdmin, requireAuth } = require('../middleware/auth');
-const {
-  pagination, isEmailOrID, isAValidEmail, isAValidPassword, verifyRoles,
-} = require('../utils/utils');
-
+const { pagination, isEmailOrID, isAValidEmail, isAValidPassword, verifyRoles } = require('../utils/utils') 
+  
 module.exports = {
   // GET "Lista de usuarios" - '/users'
   getUsers: async (req, res, next) => {
