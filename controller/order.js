@@ -96,7 +96,7 @@ module.exports = {
         { $set: req.body },
         { new: true },
       );
-      console.log(3, orderUpdate);
+      console.info(3, orderUpdate);
       return res.status(200).json(orderUpdate);
     } catch (err) {
       next(404);

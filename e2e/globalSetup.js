@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const { spawn } = require('child_process');
 const nodeFetch = require('node-fetch');
