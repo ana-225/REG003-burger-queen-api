@@ -5,7 +5,6 @@ module.exports.pagination = (response, url, page, limit, totalPages) => {
     next: response.hasNextPage ? `${url}?limit=${limit}&page=${page + 1}` : `${url}?limit=${limit}&page=${page}`,
     last: `${url}?limit=${limit}&page=${totalPages}`,
   };
-
   return linkHeader;
 };
 module.exports.isEmailOrID = (params) => {
