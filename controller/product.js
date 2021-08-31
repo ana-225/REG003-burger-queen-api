@@ -52,7 +52,7 @@ module.exports = {
       const productSave = await newProduct.save();
       return resp.status(200).send(productSave);
     } catch (err) {
-      console.info(404);
+      next(404);
     }
   },
   // PUT "Actualizar producto" -'/product/:productId'
@@ -89,7 +89,7 @@ module.exports = {
   deleteProduct: async (req, res, next) => {
     const { productId } = req.params;
     try {
-      const findProduct = await Product.findOne({ _id: productId });
+      await Product.findOne({ _id: productId });
       const deleteProduct = await Product.findOneAndDelete({ _id: productId });
       return res.status(200).json(deleteProduct);
     } catch (err) {

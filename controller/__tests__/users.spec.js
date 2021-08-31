@@ -1,17 +1,17 @@
 const {
-  pagination, isEmailOrID, isAValidEmail, isAValidPassword,
+  isEmailOrID, isAValidEmail, isAValidPassword,
 } = require('../../utils/utils');
 
 const email = 'katherinne.g@hotmail.com';
 
 describe('isEmailOrID ', () => {
   it('should return an object with the id or email', () => {
-    expect(isEmailOrID(email)).toBe(true);
+    expect(typeof isEmailOrID(email)).toBe('object');
   });
 });
 describe('isAValidEmail', () => {
   it('should return an object is a email', () => {
-    expect(isAValidEmail.isAValidEmail('katherinne.g@hotmail.com')).tobe(true);
+    expect(isAValidEmail('katherinne.g@hotmail.com')).toBe(true);
   });
 });
 
