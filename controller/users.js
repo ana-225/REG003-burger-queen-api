@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const Users = require('../Models/User');
-const { requireAdmin, requireAuth } = require('../middleware/auth');
 const { pagination, isEmailOrID, isAValidEmail, isAValidPassword, verifyRoles } = require('../utils/utils') 
 
 module.exports = {
