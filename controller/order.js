@@ -28,7 +28,7 @@ module.exports = {
       if (!orderId) {
         res.sendStatus(401);
       }
-      const order = await Order.findOne({ _id: orderId }).populate('products.product');;
+      const order = await Order.findOne({ _id: orderId }).populate('products.product');
       if (!order) {
         res.sendStatus(404);
       }
@@ -41,7 +41,7 @@ module.exports = {
   // Post "Crea una nueva orden" - '/orders'
 
   createNewOrder: async (req, res, next) => {
-  
+
     const {
       userId,
       client,
@@ -89,7 +89,6 @@ module.exports = {
         'preparing',
       ];
       if (status && !statusOrder.includes(status)) return next(400);
-
       const orderUpdate = await Order.findOneAndUpdate(
         { _id: orderId },
         { $set: req.body },

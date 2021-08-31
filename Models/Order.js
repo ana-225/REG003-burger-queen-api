@@ -18,7 +18,7 @@ const orderSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Product',
     },
-  }],
+  ],
   status: {
     type: String,
     default: 'pending',
@@ -27,7 +27,6 @@ const orderSchema = new Schema({
   dateEntry: {
     type: Date,
     default: Date.now,
-    required: true,
   },
   dateProcessed: {
     type: Date,
