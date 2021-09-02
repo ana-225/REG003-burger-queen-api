@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const { spawn } = require('child_process');

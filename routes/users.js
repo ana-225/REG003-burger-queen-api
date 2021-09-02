@@ -7,7 +7,7 @@ const {
 } = require('../middleware/auth');
 
 const {
-  getUsers, getUser, createUser, updateUser, deleteUser 
+  getUsers, getUser, createUser, updateUser, deleteUser,
 } = require('../controller/users');
 
 const User = require('../Models/User');

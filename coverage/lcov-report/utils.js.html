@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.83% </span>
+                <span class="strong">95.65% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/23</span>
+                <span class='fraction'>22/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.67% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/12</span>
+                <span class='fraction'>8/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.83% </span>
+                <span class="strong">95.65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/23</span>
+                <span class='fraction'>22/23</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -103,24 +103,30 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -129,15 +135,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,22 +145,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">module.exports.pagination = <span class="fstat-no" title="function not covered" >(r</span>esponse, url, page, limit, totalPages) =&gt; {
-  const linkHeader = <span class="cstat-no" title="statement not covered" >{</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">module.exports.pagination = (response, url, page, limit, totalPages) =&gt; {
+  const linkHeader = {
     first: `${url}?limit=${limit}&amp;page=1`,
-    prev: response.hasPrevPage ? `${url}?limit=${limit}&amp;page=${page - 1}` : `${url}?limit=${limit}&amp;page=${page}`,
-    next: response.hasNextPage ? `${url}?limit=${limit}&amp;page=${page + 1}` : `${url}?limit=${limit}&amp;page=${page}`,
+    prev: response.hasPrevPage ? <span class="branch-0 cbranch-no" title="branch not covered" >`${url}?limit=${limit}&amp;page=${page - 1}` </span>: `${url}?limit=${limit}&amp;page=${page}`,
+    next: response.hasNextPage ? <span class="branch-0 cbranch-no" title="branch not covered" >`${url}?limit=${limit}&amp;page=${page + 1}` </span>: `${url}?limit=${limit}&amp;page=${page}`,
     last: `${url}?limit=${limit}&amp;page=${totalPages}`,
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return linkHeader;</span>
+  return linkHeader;
 };
 module.exports.isEmailOrID = (params) =&gt; {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (params.indexOf('@') === -1) {
-    const uid = <span class="cstat-no" title="statement not covered" >{ _id: params };</span>
-<span class="cstat-no" title="statement not covered" >    return uid;</span>
+  if (params.indexOf('@') === -1) {
+    const uid = { _id: params };
+    return uid;
   }
   const email = { email: params };
   return email;
@@ -168,21 +168,21 @@ module.exports.isEmailOrID = (params) =&gt; {
 module.exports.isAValidEmail = (email) =&gt; {
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^(?:[^&lt;&gt;()[\].,;:\s@"]+(\.[^&lt;&gt;()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^&lt;&gt;()[\].,;:\s@"]+\.)+[^&lt;&gt;()[\]\.,;:\s@"]{2,63}$/i;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (emailRegex.test(email)) {
+  if (emailRegex.test(email)) {
     return true;
   }
-<span class="cstat-no" title="statement not covered" >  return false;</span>
+  return false;
 };
-module.exports.isAValidPassword = <span class="fstat-no" title="function not covered" >(p</span>assword) =&gt; {
-<span class="cstat-no" title="statement not covered" >  if (password.length &lt; 5) {</span>
-<span class="cstat-no" title="statement not covered" >    return false;</span>
+module.exports.isAValidPassword = (password) =&gt; {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (password.length &lt; 5) {
+    return false;
   }
 <span class="cstat-no" title="statement not covered" >  return true;</span>
 };
-module.exports.verifyRoles = <span class="fstat-no" title="function not covered" >(u</span>pdate) =&gt; {
-  let updateObject = <span class="cstat-no" title="statement not covered" >update;</span>
-<span class="cstat-no" title="statement not covered" >  if (!update.roles) {</span>
-<span class="cstat-no" title="statement not covered" >    updateObject = {</span>
+module.exports.verifyRoles = (update) =&gt; {
+  let updateObject = update;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!update.roles) {
+    updateObject = {
       email: update.email,
       password: update.password,
       roles: {
@@ -190,7 +190,7 @@ module.exports.verifyRoles = <span class="fstat-no" title="function not covered"
       },
     };
   }
-<span class="cstat-no" title="statement not covered" >  return updateObject;</span>
+  return updateObject;
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -199,7 +199,7 @@ module.exports.verifyRoles = <span class="fstat-no" title="function not covered"
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Aug 31 2021 13:25:08 GMT-0400 (hora estándar de Chile)
+                at Wed Sep 01 2021 09:36:26 GMT-0400 (hora estándar de Chile)
             </div>
         </div>
         <script src="prettify.js"></script>

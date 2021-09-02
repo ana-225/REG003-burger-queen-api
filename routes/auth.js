@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const config = require('../config');
 const Users = require('../Models/User');
-const bcrypt = require('bcrypt');
 
 const { secret } = config;
 
@@ -21,31 +21,26 @@ module.exports = (app, nextMain) => {
    */
   app.post('/auth', async (req, res, next) => {
     try {
-    const { email, password } = req.body;
+      const { email, password } = req.body;
 
-    if (!email || !password) {
-      return next(400);
+      if (!email || !password) {
+        return next(400);
+      }
+      // TODO: autenticar a la usuarix
+
+      const findUser = await Users.findOne({ email }).select('+password');
+      if (findUser === null) {
+        return next(404);
+      } if (bcrypt.compareSync(password, findUser.password)) {
+        const token = jwt.sign({ uid: findUser._id }, secret);
+        res.send({ token });
+      } else {
+        return next(401);
+      }
+    } catch (error) {
+      next(error);
     }
-    // TODO: autenticar a la usuarix
-    
-    const findUser = await Users.findOne({email: email}).select('+password');
-    if (findUser === null) {
-      return next(404);
-    } else if (bcrypt.compareSync(password, findUser.password)){ 
-      const token = jwt.sign({ uid: findUser._id }, secret);
-      res.send({token})
-    } else { 
-      return next(401)
-    }
-    
-    
-    // next();
-  } catch(error){
-    console.log(error)
-  }});
-
-
-
+  });
 
   return nextMain();
 };

@@ -95,6 +95,7 @@ module.exports = {
       const updatingUser = await Users.findOneAndUpdate(validateUid, { $set: verify }, { new: true });
       res.status(200).send(updatingUser);
     } catch (error) {
+      console.log(error)
       res.status(400).send('Debes ingresar email y password para poder actualizar.');
     }
   },
