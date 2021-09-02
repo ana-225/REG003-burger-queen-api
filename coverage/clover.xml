@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1630437985421" clover="3.2.0">
-  <project timestamp="1630437985421" name="All files">
+<coverage generated="1630500939219" clover="3.2.0">
+  <project timestamp="1630500939219" name="All files">
     <metrics statements="23" coveredstatements="23" conditionals="12" coveredconditionals="9" methods="5" coveredmethods="5" elements="40" coveredelements="37" complexity="0" loc="23" ncloc="23" packages="1" files="1" classes="1"/>
     <file name="utils.js" path="C:\Users\Katherinne\Desktop\BurguerQueenApi\REG003-burger-queen-api\utils\utils.js">
       <metrics statements="23" coveredstatements="23" conditionals="12" coveredconditionals="9" methods="5" coveredmethods="5"/>
@@ -23,10 +23,10 @@
       <line num="27" count="1" type="stmt"/>
       <line num="29" count="1" type="stmt"/>
       <line num="31" count="1" type="stmt"/>
-      <line num="32" count="4" type="stmt"/>
-      <line num="33" count="4" type="cond" truecount="1" falsecount="1"/>
-      <line num="34" count="4" type="stmt"/>
-      <line num="42" count="4" type="stmt"/>
+      <line num="32" count="3" type="stmt"/>
+      <line num="33" count="3" type="cond" truecount="1" falsecount="1"/>
+      <line num="34" count="3" type="stmt"/>
+      <line num="42" count="3" type="stmt"/>
     </file>
   </project>
 </coverage>

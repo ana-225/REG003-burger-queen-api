@@ -67,8 +67,7 @@ describe('verifyRoles', () => {
     console.log(verifyRoles(bodyUser))
     expect(typeof verifyRoles(bodyUser)).toBe('object');
   });
-  it('should return an object', () => {
-    console.log(verifyRoles(bodyUser))
+  it('should return true if roles exist', () => {
     expect(!!verifyRoles(bodyUser).roles).toBe(true);
   });
 });

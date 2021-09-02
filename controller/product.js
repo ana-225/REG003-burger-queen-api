@@ -63,8 +63,10 @@ module.exports = {
 
       if (Object.keys(req.body).length === 0) {
         return res.sendStatus(400);
-      } if (!findProduct) {
+      } else if (!findProduct) {
         return res.sendStatus(404);
+      } else if (typeof req.body.price !== 'number' && typeof req.body.name !== 'string'){
+        return next(400)
       }
 
       const updateObject = {

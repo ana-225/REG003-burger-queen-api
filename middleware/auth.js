@@ -28,7 +28,7 @@ module.exports = (secret) => (req, resp, next) => {
       req.headers.validated = userValidate;
       next()
     } catch (error) {
-      return next(403);
+        return next(403);
     }
   });
 };

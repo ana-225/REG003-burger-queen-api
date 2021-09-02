@@ -76,12 +76,14 @@ module.exports = {
   // PUT "Actualizar usuario" - '/users/:uid'
 
   updateUser: async (req, res) => {
+    
     try {
       const { uid } = req.params;
       const update = req.body;
       const validateUid = isEmailOrID(uid);
       const userAuth = req.headers.validated;
       const user = await Users.findOne(validateUid).select('+password');
+      console.log(uid)
       if (!user) {
         return res.status(404).send('No existe el usuario');
       } if (!userAuth.roles.admin && !(userAuth.id === uid || userAuth.email === uid)) {
