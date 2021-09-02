@@ -16,7 +16,8 @@ module.exports.isEmailOrID = (params) => {
   return email;
 };
 module.exports.isAValidEmail = (email) => {
-  const emailRegex = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i
+  // eslint-disable-next-line no-useless-escape
+  const emailRegex = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
   if (emailRegex.test(email)) {
     return true;
   }

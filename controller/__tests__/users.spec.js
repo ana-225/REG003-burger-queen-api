@@ -1,5 +1,5 @@
 const {
-  isEmailOrID, isAValidEmail, isAValidPassword, verifyRoles, pagination
+  isEmailOrID, isAValidEmail, isAValidPassword, verifyRoles, pagination,
 } = require('../../utils/utils');
 const email = 'katherinne.g@hotmail.com';
 const password = '123456';
@@ -9,13 +9,13 @@ const bodyUser = {
 };
 const objectExample = {
   docs: [
-      {
-        roles: {
-          admin: false
-        },
-        _id: '6128682bf7d0ed0f88d3d898',
-          email,
-      }
+    {
+      roles: {
+        admin: false,
+      },
+      _id: '6128682bf7d0ed0f88d3d898',
+      email,
+    },
   ],
   totalDocs: 1,
   limit: 1,
@@ -25,10 +25,19 @@ const objectExample = {
   hasPrevPage: false,
   hasNextPage: false,
   prevPage: null,
-  nextPage: null
-}
-const url = 'http://localhost:8080/'
-const firstPage = 'http://localhost:8080/?limit=10&page=1'
+  nextPage: null,
+};
+const url = 'http://localhost:8080/';
+const firstPage = 'http://localhost:8080/?limit=10&page=1';
+
+describe('pagination ', () => {
+  it('should return an object', () => {
+    expect(typeof pagination(objectExample, url, 1, 10, objectExample.totalPages)).toBe('object');
+  });
+  it('should return an object with links', () => {
+    expect(pagination(objectExample, url, 1, 10, objectExample.totalPages).first).toBe(firstPage);
+  });
+});
 
 describe('pagination ', () => {
   it('should return an object', () => {
@@ -60,6 +69,18 @@ describe('isValidPassword', () => {
   });
   it('should return false for an invalid password', () => {
     expect(isAValidPassword('123')).toBe(false);
+  });
+  it('should return false for an invalid password', () => {
+    expect(isAValidPassword('123')).toBe(false);
+  });
+});
+
+describe('verifyRoles', () => {
+  it('should return an object', () => {
+    expect(typeof verifyRoles(bodyUser)).toBe('object');
+  });
+  it('should return true if roles exist', () => {
+    expect(!!verifyRoles(bodyUser).roles).toBe(true);
   });
 });
 describe('verifyRoles', () => {
