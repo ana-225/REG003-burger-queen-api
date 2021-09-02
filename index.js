@@ -6,7 +6,6 @@ const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
-const cors = require('cors');
 
 const { port, dbUrl, secret } = config;
 const app = express();
