@@ -1,19 +1,16 @@
+/* eslint-disable max-len */
 const bcrypt = require('bcrypt');
 
 const {
   requireAuth,
-  requireAdmin
+  requireAdmin,
 } = require('../middleware/auth');
 
 const {
-  getUsers, 
-  getUser, 
-  createUser,
-  updateUser,
-  deleteUser, 
+  getUsers, getUser, createUser, updateUser, deleteUser,
 } = require('../controller/users');
 
-const User = require('../Models/User')
+const User = require('../Models/User');
 
 const initAdminUser = (app, next) => {
   const { adminEmail, adminPassword } = app.get('config');
@@ -25,7 +22,7 @@ const initAdminUser = (app, next) => {
     email: adminEmail,
     password: bcrypt.hashSync(adminPassword, 10),
     roles: {
-      admin: true
+      admin: true,
     },
   };
 
@@ -33,15 +30,15 @@ const initAdminUser = (app, next) => {
   const userAdmin = User.findOne({ email: adminEmail });
 
   userAdmin.then((doc) => {
-      if (doc) {
-        console.info('El usuario Admin ya esta registrado');
-        return next(200);
-      };
+    if (doc) {
+      console.info('El usuario Admin ya esta registrado');
+      return next(200);
+    }
 
-      const newAdminUser = new User(adminUser);
-      newAdminUser.save();
-      console.info('el usuario ha sido creado');
-    })
+    const newAdminUser = new User(adminUser);
+    newAdminUser.save();
+    console.info('el usuario Admin ha sido creado');
+  })
 
     .catch((err) => {
       if (err !== 200) {
@@ -183,7 +180,5 @@ module.exports = (app, next) => {
    */
   // app.delete('/users/:uid', requireAuth, (req, resp, next) => {});
   app.delete('/users/:uid', requireAuth, deleteUser);
-
-
   initAdminUser(app, next);
 };

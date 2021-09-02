@@ -1,13 +1,13 @@
+/* eslint-disable max-len */
 const jwt = require('jsonwebtoken');
-const Users = require('../Models/User')
+const Users = require('../Models/User');
 
 module.exports = (secret) => (req, resp, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
     return next();
   }
-  const [type, token] = authorization.split(' '); 
-
+  const [type, token] = authorization.split(' ');
 
   if (type.toLowerCase() !== 'bearer') {
     return next();
@@ -21,14 +21,14 @@ module.exports = (secret) => (req, resp, next) => {
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
 
     try {
-      const userValidate = await Users.findOne({_id: decodedToken.uid});
+      const userValidate = await Users.findOne({ _id: decodedToken.uid });
       if (!userValidate) {
         return next(404);
       }
       req.headers.validated = userValidate;
-      next()
+      next();
     } catch (error) {
-      return next(403);
+        return next(403);
     }
   });
 };

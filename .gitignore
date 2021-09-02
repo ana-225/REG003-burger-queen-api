@@ -2,3 +2,5 @@ node_modules/
 secrets.env
 docs
 db-data/
+coverage/
+

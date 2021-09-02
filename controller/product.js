@@ -1,9 +1,11 @@
+/* eslint-disable max-len */
 const Product = require('../Models/Product');
 const {
-  pagination
-} = require('../utils/utils')
+  pagination,
+} = require('../utils/utils');
+
 module.exports = {
-  // GET "Lista de productos" - '/products' 
+  // GET "Lista de productos" - '/products'
   getProducts: async (req, res, next) => {
     try {
       const options = {
@@ -19,11 +21,11 @@ module.exports = {
       next(err);
     }
   },
-  //GET "Datos de un producto" - '/product/:productId'
+  // GET "Datos de un producto" - '/product/:productId'
   getProduct: async (req, res, next) => {
     try {
-      const productId = req.params.productId;
-      const product = await Product.findOne({_id: productId});
+      const { productId } = req.params;
+      const product = await Product.findOne({ _id: productId });
       if (!product) {
         res.sendStatus(404);
       }
@@ -32,13 +34,15 @@ module.exports = {
       return next(404);
     }
   },
-  //Post "Crear producto" - '/products'
+  // Post "Crear producto" - '/products'
   createProduct: async (req, resp, next) => {
-    const { name, price, image, type, dateEntry } = req.body;
+    const {
+      name, price, image, type, dateEntry,
+    } = req.body;
     try {
-      if (!name || !price ) {
+      if (!name || !price) {
         return resp.sendStatus(400);
-      };
+      }
       const newProduct = new Product({
         name,
         price,
@@ -49,50 +53,50 @@ module.exports = {
       const productSave = await newProduct.save();
       return resp.status(200).send(productSave);
     } catch (err) {
-      console.log(404)
+      next(404);
     }
   },
-  //PUT "Actualizar producto" -'/product/:productId'  
+  // PUT "Actualizar producto" -'/product/:productId'
   updateProduct: async (req, res, next) => {
-    const productId = req.params.productId;
+    const { productId } = req.params;
     try {
-      const findProduct = await Product.findOne({_id: productId});
+      const findProduct = await Product.findOne({ _id: productId });
+
       if (Object.keys(req.body).length === 0) {
-        console.log('cyo en if 1')
         return res.sendStatus(400);
       } else if (!findProduct) {
         return res.sendStatus(404);
-      } else if (typeof (productId.price) !== 'number'){
-        console.log('no es number ')
+      } else if (typeof req.body.price !== 'number' && typeof req.body.name !== 'string'){
+        return next(400)
       }
+
       const updateObject = {
         name: (req.body.name || findProduct.name),
         price: (req.body.price || findProduct.price),
         image: (req.body.image || findProduct.image),
         type: (req.body.type || findProduct.type),
-      }
+      };
       const productUpdate = await Product.findOneAndUpdate({
-        _id: productId
+        _id: productId,
       }, {
-        $set: updateObject
+        $set: updateObject,
       }, {
-        new: true
+        new: true,
       });
       return res.status(200).json(productUpdate);
     } catch (err) {
-      console.log('cayo en el catch')
       next(404);
     }
   },
-  //DELETE "Eliminar producto" - '/products/:productId'
+  // DELETE "Eliminar producto" - '/products/:productId'
   deleteProduct: async (req, res, next) => {
-    const productId = req.params.productId;
+    const { productId } = req.params;
     try {
-      const findProduct = await Product.findOne({ _id: productId });
+      await Product.findOne({ _id: productId });
       const deleteProduct = await Product.findOneAndDelete({ _id: productId });
       return res.status(200).json(deleteProduct);
     } catch (err) {
       next(404);
     }
-  }
+  },
 };

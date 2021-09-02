@@ -1,6 +1,6 @@
 const httpErrors = {
   400: 'Bad request',
-  401: 'Unauthorized', //Este error aparece cuando no hay nadie conectado a nuesta app, se requiere autenticacion.
+  401: 'Unauthorized',
   403: 'Forbidden',
   404: 'Not found',
   500: 'Internal server error',
