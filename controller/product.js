@@ -62,10 +62,12 @@ module.exports = {
     try {
       const findProduct = await Product.findOne({ _id: productId });
 
-      // if (Object.keys(req.body).length === 0) {
-      //   return res.sendStatus(400);
-      if (!productId) {
-        return res.next(400);
+      if (Object.keys(req.body).length === 0) {
+        return res.sendStatus(400);
+      } else if (!findProduct) {
+        return res.sendStatus(404);
+      } else if (typeof req.body.price !== 'number' && typeof req.body.name !== 'string'){
+        return next(400)
       }
 
       const updateObject = {
